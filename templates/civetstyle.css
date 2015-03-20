@@ -1,0 +1,15 @@
+body {
+    height:700px;
+    width:960px;
+    padding:5px; 
+    border: 2px dashed blue;
+    }
+
+li {
+    margin: 12px 0 3px 0;
+    }
+    
+.civtitle {
+    float:left; 
+    width:800px
+}

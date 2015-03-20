@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CIVET File Selection</title>
+    <meta name="generator" content="BBEdit 11.0" />
+</head>
+<body>
+<form method="POST" action="/goto_edit">
+
+<H1>Select a case to edit:</H1>
+<p> So, which version do you like better?
+
+<p>
+<select name="inputfile">
+    <option value="">Select a file</option>
+    <option value="TST.LOR.20150311.txt">TST.LOR.20150311</option> 
+    <option value="REU.LBY.20150220.txt">REU.LBY.20150220</option>
+    <option value="BBC.UKR.150203.txt">BBC.UKR.150203</option>
+    <option value="AFP.COG.150204.txt">AFP.COG.150204</option>
+    <option value="BBC.COG.150203.txt">BBC.COG.150203</option>
+    <option value="AFP.BGD.150202.txt">AFP.BGD.150202</option>
+</select>
+
+<br>
+<br>
+<input type="radio" name="choosefile" value="TST.LOR.20150311.txt" checked>TST.LOR.20150311<br> 
+<input type="radio" name="choosefile"  value="REU.LBY.20150220.txt">REU.LBY.20150220<br>
+<input type="radio" name="choosefile"  value="BBC.UKR.150203.txt">BBC.UKR.150203<br>
+<input type="radio" name="choosefile"  value="AFP.COG.150204.txt">AFP.COG.150204<br>
+<input type="radio" name="choosefile"  value="BBC.COG.150203.txt">BBC.COG.150203<br>
+<input type="radio" name="choosefile"  value="AFP.BGD.150202.txt">AFP.BGD.150202<br>
+
+<h2><input type="submit" id="submit" name="submit" value="Edit the file" ></h2>
+
+</form>
+<h3>Operating instructions for the text-extraction demonstration are <a href="/operating">here</a></h3>
+
+</body>
+</html>

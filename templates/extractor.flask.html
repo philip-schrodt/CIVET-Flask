@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Text Extraction Testbed</title>
+	<meta name="generator" content="BBEdit 11.0" />
+<style>
+    body {
+        height:700px;
+        width:960px;
+        padding:5px; 
+        border: 2px dashed blue
+        }
+    .mka    {color:black}  // note: dots mean these are classes
+    .mkc    {color:black}
+    .mkd    {color:black}
+    .mke    {color:black}
+    .mks    {color:black}
+    .highlight  { background-color:yellow;}
+    .highlight2 {background-color:lightgreen;}
+</style>
+</head>
+<!--
+Options:
+    Click in text box selects words with the given letter
+    right arrow goes through selections
+    down arrow puts current highlighted word in box
+    left arrow puts any mouse-selected text in box
+    tab goes between fields
+    return does whatever the default is
+-->
+<body onload="initglobals()">
+
+<script>
+
+// declare an assortment of globals
+var	wdindex = 0;  // location of start of search for next word in wordset
+var	curstr = ""   // text of current highlighted word
+var curhighlight = ""  // id of the words currently highlighted
+var curfield = ""  // id of the words currently highlighted
+var inputText;
+var glinner;
+
+function initglobals()
+{
+	inputText = document.getElementById("inputText");
+	glinner = inputText.innerHTML;
+    document.onkeypress =  dokeypress;
+    document.onkeydown =  dokeydown;
+}
+
+function highlight(text)
+{
+    inputText = document.getElementById("inputText")
+    var innerHTML = inputText.innerHTML
+    var index = innerHTML.indexOf(text);
+    if ( index >= 0 )
+    { 
+        innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+        inputText.innerHTML = innerHTML 
+    }
+
+}
+
+function highlight2(text)
+{
+    inputText = document.getElementById("inputText")
+    var innerHTML = inputText.innerHTML
+    var index = innerHTML.indexOf(text);
+    if ( index >= 0 )
+    { 
+        innerHTML = innerHTML.substring(0,index) + "<span class='highlight2'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+        inputText.innerHTML = innerHTML 
+    }
+
+}
+
+function nextword()
+{
+    var curHTML = glinner;
+    var endspace = curHTML.indexOf(' ',wdindex+1);
+    if (endspace < 0) { endspace = curHTML.length} // -1?
+	console.log("Indices: " + wdindex + '  ' + endspace + '  ' + curHTML.length);   
+    curHTML = curHTML.substring(0,wdindex) + "<span class='highlight2'>" + curHTML.substring(wdindex,endspace) + "</span>" + curHTML.substring(endspace);
+    inputText.innerHTML = curHTML;
+    wdindex = endspace + 1
+    if (wdindex >= glinner.length) { wdindex = 0}
+
+}
+
+function nexttag(tagst)
+{
+    var curHTML = glinner;
+    wdindex = curHTML.indexOf(tagst,wdindex)
+    if (wdindex < 0) 
+    { 
+        wdindex = 0
+        wdindex = curHTML.indexOf(tagst,wdindex)
+    }
+
+    var endspace = curHTML.indexOf(tagst,wdindex+1) + tagst.length;
+	console.log("Indices: " + wdindex + '  ' + endspace + '  ' + tagst);   
+//	console.log("String 1: " + curHTML.substring(0,wdindex-1));   
+//	console.log("String 2: " + curHTML.substring(wdindex-1,endspace+1));   
+    curstr = curHTML.substring(wdindex-1,endspace+1)
+    curHTML = curHTML.substring(0,wdindex-1) + "<span class='highlight2'>" + curHTML.substring(wdindex-1,endspace+1) + "</span>" + curHTML.substring(endspace+1);
+    inputText.innerHTML = curHTML;
+    wdindex = endspace + tagst.length
+    if (wdindex >= glinner.length) { wdindex = 0}
+}
+
+function nexthightag()
+{
+    var curHTML = glinner;
+    wdindex = curHTML.indexOf(curhighlight,wdindex)
+    if (wdindex < 0) 
+    { 
+        wdindex = 0
+        wdindex = curHTML.indexOf(curhighlight,wdindex)
+    }
+
+    var endspace = curHTML.indexOf("</span>",wdindex+1) + 7;
+//	console.log("Indices: " + wdindex + '  ' + endspace );   
+//	console.log("String 1: " + curHTML.substring(0,wdindex-1));   
+//	console.log("String 2: " + curHTML.substring(wdindex-13,endspace));   
+    curstr = curHTML.substring(wdindex+curhighlight.length+2,endspace-7)
+//	console.log("curstr: " + curstr);   
+    curHTML = curHTML.substring(0,wdindex-13) + "<span class='highlight2'>" + curHTML.substring(wdindex-13,endspace) + "</span>" + curHTML.substring(endspace);
+//	console.log("curHTML: " + curHTML);   
+    inputText.innerHTML = curHTML;
+    wdindex = endspace + 1;
+    if (wdindex >= glinner.length) { wdindex = 0}
+    // not sure why I have to reset this but it works 
+    var list = document.getElementsByClassName(curhighlight);
+    for (var i = 0; i < list.length; i++) {
+        list[i].style.color="red";
+    }
+}
+function getcurrentstr()
+// gets the string currently highlighted
+{
+	var ind1 = curstr.indexOf('>');
+	console.log("curword: " + curstr.substring(ind1+1,curstr.indexOf('<',ind1))); 
+	var elem = document.getElementById("Aword");
+    elem.value = curstr.substring(ind1+1,curstr.indexOf('<',ind1));  
+}
+
+function coloraclass(theprefix)
+// changes color of the words in the class and reverts existing highlighted words to black
+{
+	curfield = theprefix.toUpperCase() + 'word';
+	var elem = document.getElementById(curfield);
+//    if (curhighlight != '') {  // seems to cancel out without my doing anything now
+//        var delist = document.getElementsByClassName(curhighlight);
+ //       for (var i = 0; i < delist.length; i++) {
+ //           delist[i].style.color="black";
+ //       }
+//    }
+    var theclass = "mk" + theprefix
+//    var list = document.getElementsByClassName(theclass);
+//    for (var i = 0; i < list.length; i++) {
+//        list[i].style.color="red";
+//    }
+    curhighlight = theclass;
+    wdindex = 0;
+//    console.log("glinner: " + glinner);   
+    nexthightag();  // this actually does the coloring
+    document.getElementById("inputText").focus()
+}
+function dokeypress(evt){
+    var charCode = evt.keyCode
+//    console.log('Char '+charCode );
+}
+
+function dokeydown(evt)
+// it would be nice to have the down key get either a selection or the highlighted
+// text, depending on whether a selection had been made, but haven't figured that one out yet
+
+{
+    var charCode = evt.keyCode
+    console.log('Down '+charCode );
+    if (charCode == 39) {nexthightag()}  // right arrow
+    if (charCode == 40) {  // down arrow
+    	var elem = document.getElementById(curfield);
+        console.log("curword: " + curstr + "curfield: " + curfield); 
+        elem.value = curstr;
+    }
+    if (charCode == 37) {  // down arrow
+    	var elem = document.getElementById(curfield);
+        if (document.getSelection) {
+            elem.value = document.getSelection().toString();
+	        console.log("selection2: " + elem.value);             
+        }  
+    }
+}
+</script>
+
+<!--<button onclick="nexthightag()">Tag wordset</button>
+<button onclick="nexttag('b2')">Tag b2</button>
+<button onclick="nextword()">Next word</button>-->
+
+<div id="inputText" style="float:left; width:48%;height:90%;line-height:2em;padding:5px;border:4px double #DEBB07;">
+{% autoescape false %}
+	{{markedtext}}
+{% endautoescape %}
+</div>
+
+<form action="/save_entry" method = "post">
+<div id="dataentryArea" style="float:left;width:48%;height:256px;line-height:2em;overflow:auto;padding:5px;border:2px dotted ;">
+A word
+<input type="text" name="Aword" id="Aword" value="" onfocus="coloraclass('a')">
+C word
+<input type="text" name="Cword" id="Cword" value="" onfocus="coloraclass('c')">
+<br>
+D word
+<input type="text" name="Dword" id="Dword" value="" onfocus="coloraclass('d')">
+E word
+<input type="text" name="Eword" id="Eword" value="" onfocus="coloraclass('e')">
+<br>
+S word
+<input type="text" name="Sword" id="Sword" value="" onfocus="coloraclass('s')">
+</div>
+<br>
+
+<div id="submitArea" style="clear:both; float:bottom; height:20px;padding:10px;border:2px dotted green;">
+<b>Options after saving:</b>
+<button type="submit">Return to this case</button>
+<button type="submit" formaction="/get_new_case">Select new case</button>
+<button type="submit" formaction="/display_data">Download data</button>
+</div>
+</form>
+</body>
+</html>

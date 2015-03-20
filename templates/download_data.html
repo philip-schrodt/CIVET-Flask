@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CIVET Download</title>
+    <meta name="generator" content="BBEdit 11.0" />
+</head>
+<body>
+<form action="/download_data" method = "post">
+<h1>Download CIVET data:</h1>
+<h2>Enter name of output file:</h2>
+<input type="text" name="filename" value="{{filename}}" size = "64">
+[".csv" suffix will automatically be added]
+
+<br><br><button type="submit">Download file</button>
+</form>
+<h3>To continue, use one of the following links:</h3>
+<ul>
+<li><a href="/reset_data">Start new data file</a></li>
+<li><a href="/continue_coding">Continue coding</a></li>
+</ul><h3>To quit, just close the window</h3>
+
+</body>
+</html>

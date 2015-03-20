@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Basic CIVET data entry template</title>
+    <meta name="generator" content="CIVET" />
+</head>
+<body>
+<form action="/save_basic" method = "post">
+{% autoescape false %}
+    {{form_content}}
+{% endautoescape %}
+
+<!--<div id="submitArea" style="clear:both; height:20px;padding:10px;border:2px dotted green;"> -->
+<br>
+<b>Options after saving:</b>
+<button type="submit">Code another case</button>
+<button type="submit" formaction="/display_data">Download data</button>
+</form>
+<!-- </div> -->
+</body>
+</html>

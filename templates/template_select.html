@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>CIVET template selection</title>
+    <meta name="generator" content="BBEdit 11.0" />
+    <style> 
+        .button {
+         width: 70px;
+        height: 30px;
+        border-radius: 10px;
+        background-color: aqua;
+        }
+        
+        .button2 {
+         width: 120px;
+        height: 30px;
+        background-color: lightpink;
+        border-radius: 10px;
+        }
+    
+   </style>
+<body>
+<script>
+function cancelFile() {
+    document.getElementById("template_name").value = "";
+}
+</script>
+<h2>CIVET: Select template file</h2>
+<form method="POST" enctype="multipart/form-data" action="/read_template" >
+<p>
+    Select a file: <input type="file" name="template_name" > <br>
+<p>
+<b>Coder [optional]:</b>
+<input type="text" name="codername" size = "64">
+
+<p>
+
+<button class="button" type="submit">Read file</button>
+<button class="button2" type="submit" onclick="cancelFile()">Use demo template</button> <!-- forces selection of the demo template -->
+
+</form>
+<h3>Download template demonstration file: <a href="/download_demotemplate">click here</a></h3>
+</body>
+</html>
